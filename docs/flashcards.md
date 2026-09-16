@@ -154,5 +154,34 @@ codes work on their own. When the Anthropic call is added next, any new failure
 is clearly from that piece, not the plumbing.
 Tag: interview
 
+---
+
+## Step 5 — Load API key + create Anthropic client
+
+### Q: What does `python-dotenv` / `load_dotenv()` do?
+A: It reads key=value pairs from a `.env` file and loads them into
+`os.environ` at startup, so code can read secrets/config via
+`os.environ.get(...)` without hardcoding them in source.
+Tag: concept
+
+### Q: Why keep the API key in `.env` and git-ignore it instead of in the code?
+A: Secrets in source get committed and leak (especially in public repos).
+`.env` keeps the key on the machine only; each environment supplies its own, and
+the file is git-ignored so it never enters version control.
+Tag: interview
+
+### Q: Why create the `Anthropic()` client once at module load instead of inside the handler?
+A: The client is reusable and can hold connection pooling/config. Creating it
+once avoids rebuilding it on every request, which is wasteful. Handlers just use
+the shared `client`.
+Tag: learning
+
+### Q: Does creating the Anthropic client with a bad/placeholder key fail immediately?
+A: No — constructing the client just stores the key. Authentication is only
+checked when you actually make an API call, which is why this piece is safe to
+add before wiring the real request.
+Tag: learning
+
+
 
 
