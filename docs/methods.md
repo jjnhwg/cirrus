@@ -35,3 +35,9 @@ there is an event an a thought
 > Changed (step 7): strips the ``` fences and `json.loads` the reply — output is
 > now the parsed reading object (`{mode, altitude, quoted_phrase, label,
 > explanation, predictions, suggestion}`), not `{"raw": ...}`.
+
+> Changed (step 8): wrapped the Claude call + parsing in try/except — any failure
+> (API error, bad key, unparseable reply) now returns a clean 500 with a plain
+> message instead of crashing. Add 500 to your Output list.
+
+made the response from the api call to look more formatted

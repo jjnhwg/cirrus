@@ -246,6 +246,42 @@ crashes the request. That's why the next piece wraps it in try/except to return
 a clean 500 instead.
 Tag: interview
 
+---
+
+## Step 8 — Error handling (try/except → 500)
+
+### Q: How does try/except work in Python?
+A: Code in the `try` block runs normally; if it raises an exception, execution
+jumps to the matching `except` block instead of crashing. It lets you handle
+failure paths deliberately.
+Tag: concept
+
+### Q: Why is the 400 validation kept OUTSIDE the try/except?
+A: The 400 is a deliberate rejection of bad input, not an unexpected error. If it
+were inside the `try`, the broad `except Exception` would catch it and wrongly
+convert it into a 500. Keeping it outside preserves the correct status.
+Tag: interview
+
+### Q: What kinds of failures does the try/except here catch?
+A: Anything in the Claude call or parsing — a bad/expired API key, a network
+error, an Anthropic outage, or a reply that isn't valid JSON
+(`JSONDecodeError`). All become one clean 500.
+Tag: learning
+
+### Q: Why return a generic message instead of the raw exception to the user?
+A: Raw exceptions can leak internal details (stack traces, keys, implementation)
+and read as scary. A calm, generic message is safer and on-brand; the real error
+can still be logged server-side for debugging.
+Tag: interview
+
+### Q: Trade-off of catching broad `except Exception` vs specific exceptions?
+A: Broad catching is simple and guarantees no crash, but hides which failure
+happened and can mask bugs. Specific excepts (e.g. `JSONDecodeError`, API
+errors) give clearer handling/messages at the cost of more code. For one small
+endpoint, broad is acceptable.
+Tag: learning
+
+
 
 
 

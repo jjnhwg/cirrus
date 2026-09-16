@@ -61,28 +61,33 @@ def read(body: ReadRequest):
         )
     #builds an http post to antrhopic api end point to create a message 
 
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=1000,
-        system=SYSTEM_PROMPT,
-        messages=[
-            {
-                "role": "user",
-                "content": f"What happened: {body.event}\n\nWhat they told themselves: {body.thought}",
-            }
-        ],
-    )
+    try:
+        message = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=1000,
+            system=SYSTEM_PROMPT,
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"What happened: {body.event}\n\nWhat they told themselves: {body.thought}",
+                }
+            ],
+        )
 
-    # Return the raw text for now; parsing is added in the next piece.
-    raw = message.content[0].text
+        raw = message.content[0].text
 
-    # The model sometimes wraps its JSON in ``` fences; strip them before parsing.
-    cleaned = raw.strip()
-    if cleaned.startswith("```"):
-        cleaned = cleaned.split("\n", 1)[-1]  # drop the opening ```/```json line
-        cleaned = cleaned.rsplit("```", 1)[0]  # drop the closing ```
-    cleaned = cleaned.strip()
+        # The model sometimes wraps its JSON in ``` fences; strip them before parsing.
+        cleaned = raw.strip()
+        if cleaned.startswith("```"):
+            cleaned = cleaned.split("\n", 1)[-1]  # drop the opening ```/```json line
+            cleaned = cleaned.rsplit("```", 1)[0]  # drop the closing ```
+        cleaned = cleaned.strip()
 
-    reading = json.loads(cleaned)
-    return reading
+        reading = json.loads(cleaned)
+        return reading
+    except Exception:
+        raise HTTPException(
+            status_code=500,
+            detail="Something drifted off. Try again in a moment.",
+        )
 
