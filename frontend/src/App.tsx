@@ -1,10 +1,8 @@
-"use client";
-
 import { useState } from "react";
 
 type View = "input" | "loading" | "result";
 
-export default function Home() {
+export default function App() {
   const [view, setView] = useState<View>("input");
   const [event, setEvent] = useState("");
   const [thought, setThought] = useState("");
@@ -13,7 +11,7 @@ export default function Home() {
 
   function handleSubmit() {
     if (!canSubmit) return;
-    // API call wired up in the next step.
+    // API call to the FastAPI backend is wired up in a later step.
     setView("loading");
   }
 

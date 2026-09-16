@@ -1,6 +1,11 @@
 # dependencies
 node_modules/
 
+# python
+.venv/
+__pycache__/
+*.pyc
+
 # next.js
 .next/
 out/
@@ -18,3 +23,5 @@ next-env.d.ts
 # project-specific (kept out of git)
 .github/copilot-instructions.md
 prompt.md
+docs/methods.md
+docs/flashcards.md

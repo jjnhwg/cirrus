@@ -7,4 +7,10 @@ bottom.
 
 ---
 
-_No backend methods yet. The first entry will be the `POST /api/read` handler._
+## `health()`
+
+- **File:**
+- **Summary:**
+- **Input:**
+- **Output:**
+- **User flow:**
