@@ -281,6 +281,41 @@ errors) give clearer handling/messages at the cost of more code. For one small
 endpoint, broad is acceptable.
 Tag: learning
 
+---
+
+## Step 9 — CORS
+
+### Q: What is the Same-Origin Policy and what counts as an "origin"?
+A: A browser security rule: JS from one origin can't read responses from a
+different origin by default. An origin = scheme + host + port
+(`http://localhost:5173`), so a different port alone makes it cross-origin.
+Tag: concept
+
+### Q: What is CORS and how does the server "allow" a cross-origin request?
+A: CORS (Cross-Origin Resource Sharing) lets a server opt in by sending
+`Access-Control-Allow-Origin` (and related) headers naming which origins/methods
+are permitted. The browser reads those headers and allows or blocks the JS.
+Tag: concept
+
+### Q: What does `app.add_middleware(CORSMiddleware, ...)` do in FastAPI?
+A: Middleware wraps every request/response. `CORSMiddleware` automatically adds
+the correct CORS headers (and answers preflight OPTIONS requests) based on the
+allowed origins/methods/headers you configure.
+Tag: learning
+
+### Q: Why did the app work through the Vite proxy without CORS, but still add it?
+A: The dev proxy makes browser calls look same-origin (all via :5173), so CORS
+wasn't triggered. Adding it lets the backend be called directly and is required
+in production where frontend and backend are truly different origins.
+Tag: interview
+
+### Q: Why restrict `allow_origins` to a specific origin instead of `*`?
+A: `*` allows any site to call your API from a browser. Naming only the trusted
+frontend origin is a least-privilege security choice that limits who can invoke
+it cross-origin.
+Tag: interview
+
+
 
 
 
