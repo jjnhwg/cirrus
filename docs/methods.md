@@ -15,6 +15,10 @@ bottom.
 - **Output:**
 - **User flow:**
 
+
+## how the anthropic api sdk works 
+
+
 ## `read()` — `POST /api/read`
 
 - **File:** - backend/main.py
@@ -23,3 +27,7 @@ there is an event an a thought
 - **Input:** - the event and thought body from the pydantic model 
 - **Output:** - the event and the thoguht 
 - **User flow:**. - user submits an event and thought
+
+> Changed (step 6): added the Claude call — output is no longer the echoed
+> event/thought, it's now the model's raw text reply (`{"raw": ...}`). Update
+> your Summary/Output to reflect that.

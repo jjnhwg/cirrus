@@ -182,6 +182,36 @@ checked when you actually make an API call, which is why this piece is safe to
 add before wiring the real request.
 Tag: learning
 
+---
+
+## Step 6 — System prompt + the Claude call
+
+### Q: What is the "system prompt" vs the "user message" in a Claude call?
+A: The system prompt sets the model's role and rules for the whole conversation
+(here: how to analyze the thought and the exact JSON to return). The user
+message is the specific input (the event + thought). System = instructions,
+user = data.
+Tag: concept
+
+### Q: What are the key parameters of `client.messages.create(...)`?
+A: `model` (which Claude version), `max_tokens` (cap on the reply length),
+`system` (the instructions), and `messages` (the conversation list of
+role/content items). It returns a message whose `content` is a list of blocks.
+Tag: concept
+
+### Q: Why does `message.content[0].text` get the reply, not just `message`?
+A: A response's `content` is a list of typed blocks (text, tool use, etc.). For
+a plain text answer the first block is a text block, so `.text` on it is the
+actual string the model wrote.
+Tag: learning
+
+### Q: Why return the raw model text first instead of parsing immediately?
+A: To see exactly what the model produces before trusting it. That revealed
+Claude wraps its JSON in ```json fences despite being told not to — which
+justifies the next piece: stripping fences before `json.loads`.
+Tag: interview
+
+
 
 
 
