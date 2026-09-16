@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root {
+  /* Soft sky palette — no black anywhere */
+  --sky-offwhite: #f7f9fb;
+  --sky-pale: #dce7f0;
+  --sky-blue: #b8d0e6;
+  --sky-deep: #6f8ba8;
+  --warm-grey: #8a8f96;
+  --ink: #3a4654; /* darkest text — a deep slate, never pure black */
+}
+
+@theme inline {
+  --color-offwhite: var(--sky-offwhite);
+  --color-pale: var(--sky-pale);
+  --color-sky: var(--sky-blue);
+  --color-deep: var(--sky-deep);
+  --color-warmgrey: var(--warm-grey);
+  --color-ink: var(--ink);
+  --font-serif: Georgia, "Times New Roman", serif;
+}
+
+html,
+body {
+  background-color: var(--sky-offwhite);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
