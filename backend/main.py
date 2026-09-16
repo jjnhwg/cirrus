@@ -1,3 +1,4 @@
+import json
 import os
 
 from anthropic import Anthropic
@@ -74,5 +75,14 @@ def read(body: ReadRequest):
 
     # Return the raw text for now; parsing is added in the next piece.
     raw = message.content[0].text
-    return {"raw": raw}
+
+    # The model sometimes wraps its JSON in ``` fences; strip them before parsing.
+    cleaned = raw.strip()
+    if cleaned.startswith("```"):
+        cleaned = cleaned.split("\n", 1)[-1]  # drop the opening ```/```json line
+        cleaned = cleaned.rsplit("```", 1)[0]  # drop the closing ```
+    cleaned = cleaned.strip()
+
+    reading = json.loads(cleaned)
+    return reading
 

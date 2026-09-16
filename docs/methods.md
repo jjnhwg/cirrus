@@ -31,3 +31,7 @@ there is an event an a thought
 > Changed (step 6): added the Claude call — output is no longer the echoed
 > event/thought, it's now the model's raw text reply (`{"raw": ...}`). Update
 > your Summary/Output to reflect that.
+
+> Changed (step 7): strips the ``` fences and `json.loads` the reply — output is
+> now the parsed reading object (`{mode, altitude, quoted_phrase, label,
+> explanation, predictions, suggestion}`), not `{"raw": ...}`.

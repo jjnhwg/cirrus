@@ -211,6 +211,42 @@ Claude wraps its JSON in ```json fences despite being told not to — which
 justifies the next piece: stripping fences before `json.loads`.
 Tag: interview
 
+---
+
+## Step 7 — Strip fences + parse JSON
+
+### Q: What does `json.loads()` do?
+A: It parses a JSON-formatted *string* into a Python object (a `dict`/`list`).
+"loads" = "load string". The reverse, `json.dumps()`, turns a Python object
+back into a JSON string.
+Tag: concept
+
+### Q: Why must the ``` fences be removed before `json.loads()`?
+A: `json.loads` expects the string to be pure JSON. The backtick fence lines
+(```json … ```) are not valid JSON, so parsing would raise a
+`JSONDecodeError`. Stripping them leaves only the object to parse.
+Tag: learning
+
+### Q: How does the fence-stripping code work?
+A: If the text starts with ```` ``` ````, `split("\n", 1)[-1]` drops the first
+line (the opening fence), and `rsplit("```", 1)[0]` drops everything from the
+final ```` ``` ````. `.strip()` cleans up whitespace. If there are no fences it
+leaves the text untouched.
+Tag: learning
+
+### Q: Once `read()` returns a Python dict, how does the client get JSON?
+A: FastAPI automatically serializes the returned dict to a JSON HTTP response
+(with the right content-type). So returning `reading` (a dict) sends structured
+JSON to the caller — no manual `json.dumps` needed.
+Tag: concept
+
+### Q: What's still fragile about this parsing step right now?
+A: If the model ever returns non-JSON or malformed JSON, `json.loads` raises and
+crashes the request. That's why the next piece wraps it in try/except to return
+a clean 500 instead.
+Tag: interview
+
+
 
 
 
