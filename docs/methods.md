@@ -14,3 +14,12 @@ bottom.
 - **Input:**
 - **Output:**
 - **User flow:**
+
+## `read()` — `POST /api/read`
+
+- **File:** - backend/main.py
+- **Summary:** - when a user submits their thoughts the read makes sure 
+there is an event an a thought
+- **Input:** - the event and thought body from the pydantic model 
+- **Output:** - the event and the thoguht 
+- **User flow:**. - user submits an event and thought

@@ -120,4 +120,39 @@ adding any real logic. Health checks are also standard in production for load
 balancers/monitoring to know a service is alive.
 Tag: learning
 
+---
+
+## Step 4 — POST /api/read with validation
+
+### Q: What is a Pydantic model and how does FastAPI use it?
+A: A class subclassing `BaseModel` that declares fields with types
+(`event: str`, `thought: str`). When a route takes it as a parameter, FastAPI
+parses the request JSON into it and validates types automatically, returning
+422 if the body doesn't match — no manual parsing needed.
+Tag: concept
+
+### Q: Difference between a 400 and a 422 in this endpoint?
+A: 422 is FastAPI/Pydantic rejecting a body of the wrong *shape* (missing field,
+wrong type) automatically. 400 is our own rule for a body that's the right shape
+but semantically invalid (present but empty/whitespace text).
+Tag: learning
+
+### Q: Why check `.strip()` when Pydantic already validated the fields?
+A: Pydantic confirms the fields exist and are strings, but `""` or `"   "` are
+valid strings. The empty-check is a business rule the type system can't express,
+so we enforce it in the handler and raise `HTTPException(400)`.
+Tag: learning
+
+### Q: How do you raise an error with a specific status code in FastAPI?
+A: `raise HTTPException(status_code=..., detail=...)`. FastAPI turns it into a
+JSON response `{"detail": ...}` with that status, instead of crashing.
+Tag: concept
+
+### Q: Why build/test the endpoint's validation before adding the AI call?
+A: It isolates concerns — you prove request parsing, validation, and status
+codes work on their own. When the Anthropic call is added next, any new failure
+is clearly from that piece, not the plumbing.
+Tag: interview
+
+
 
